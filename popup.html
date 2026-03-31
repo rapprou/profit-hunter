@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ProfitHunter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 480px;
+      background: #f5f6fa;
+      color: #2d3436;
+      padding: 16px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .header-icon { font-size: 24px; }
+    .header h1 { font-size: 15px; font-weight: 700; color: #0066c0; }
+    .header p  { font-size: 11px; color: #888; margin-top: 2px; }
+
+    /* ── Champ Marque ── */
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .brand-row label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      white-space: nowrap;
+    }
+    #brandInput {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1.5px solid #ddd;
+      border-radius: 7px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #brandInput:focus { border-color: #0066c0; }
+
+    /* ── Bouton principal ── */
+    #startBtn {
+      width: 100%;
+      padding: 11px;
+      background: #f0a500;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #startBtn:hover:not(:disabled) { background: #d99200; }
+    #startBtn:disabled { background: #ddd; color: #888; cursor: not-allowed; }
+
+    /* ── Alerte ── */
+    #alert {
+      display: none;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+    }
+    #alert.error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+    #alert.success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+
+    /* ── Progress ── */
+    #progressSection {
+      display: none;
+      margin-top: 12px;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .progress-bar {
+      background: #dfe6e9;
+      border-radius: 99px;
+      height: 7px;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, #0066c0, #00b4d8);
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* ── Tableau résultats ── */
+    #resultsSection { display: none; margin-top: 14px; }
+
+    .results-header {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    th {
+      background: #0066c0;
+      color: white;
+      padding: 7px 6px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td {
+      padding: 6px 6px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f0f7ff; }
+
+    td a {
+      color: #0066c0;
+      text-decoration: none;
+      display: block;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    td a:hover { text-decoration: underline; }
+
+    .rentable { color: #27ae60; font-weight: 700; }
+    .faible   { color: #e74c3c; font-weight: 600; }
+    .neutre   { color: #888; }
+
+    /* ── Bouton CSV ── */
+    #downloadBtn {
+      display: none;
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      background: #27ae60;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #downloadBtn:hover { background: #219150; }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 10px;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-icon">🛒</div>
+    <div>
+      <h1>ProfitHunter</h1>
+      <p>Amazon.fr → Distributeurs FR</p>
+    </div>
+  </div>
+
+  <div class="brand-row">
+    <label for="brandInput">Marque</label>
+    <input type="text" id="brandInput" placeholder="ex: Signal, Luxéol, TRESemmé…" autocomplete="off" />
+  </div>
+
+  <button id="startBtn">🔍 Lancer l'analyse</button>
+
+  <div id="alert"></div>
+
+  <div id="progressSection">
+    <div class="progress-label" id="progressLabel">Initialisation...</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div id="resultsSection">
+    <div class="results-header" id="resultsHeader"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Amazon</th>
+          <th>Fourni</th>
+          <th>Marge</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+
+  <button id="downloadBtn">⬇️ Télécharger le CSV</button>
+
+  <div class="footer">ProfitHunter v2.0 — Roussille</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

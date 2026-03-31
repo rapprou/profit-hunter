@@ -1,0 +1,61 @@
+══════════════════════════════════════════════════════════
+   ARBITRAGE FINDER — Extension Chrome
+   Guide d'installation (2 minutes)
+══════════════════════════════════════════════════════════
+
+INSTALLATION
+──────────────────────────────
+1. Ouvrez Chrome et tapez dans la barre d'adresse :
+   chrome://extensions
+
+2. Activez le "Mode développeur" (interrupteur en haut à droite)
+
+3. Cliquez sur "Charger l'extension non empaquetée"
+
+4. Sélectionnez le dossier :
+   Arbitrage-FBA/scripts/lubido-extension
+
+5. L'extension apparaît dans Chrome ✅
+   (icône puzzle en haut à droite → épinglez-la pour y accéder facilement)
+
+
+UTILISATION
+──────────────────────────────
+1. Allez sur la boutique Lubido sur Amazon.fr :
+   https://www.amazon.fr/stores/Lubido/page/E1DB89E6-22E4-4BC3-A431-796F91066096
+
+2. Attendez que la page soit complètement chargée
+
+3. Cliquez sur l'icône de l'extension (barre d'outils Chrome)
+
+4. Cliquez sur "Lancer l'analyse"
+
+5. L'extension va :
+   ✓ Lire tous les produits sur la page Amazon
+   ✓ Ouvrir des onglets Google Shopping en arrière-plan
+   ✓ Comparer les prix automatiquement
+   ✓ Afficher les résultats avec la marge
+
+6. Cliquez "Télécharger le CSV" pour récupérer le fichier
+
+
+CHANGER DE MARQUE
+──────────────────────────────
+Dans popup.js, modifiez la ligne :
+   const BRAND = 'Lubido';
+→  const BRAND = 'NomDeLaMarque';
+
+Puis rechargez l'extension dans chrome://extensions
+
+
+NOTES
+──────────────────────────────
+• Des onglets Google Shopping vont s'ouvrir puis se fermer
+  automatiquement pendant l'analyse — c'est normal !
+
+• L'analyse prend environ 3-5 secondes par produit
+
+• La colonne "Marge" = Prix Amazon - Prix fournisseur
+  Vert ✅ = rentable (≥ 3€) / Rouge ⚠️ = marge faible
+
+══════════════════════════════════════════════════════════

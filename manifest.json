@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "ProfitHunter",
+  "version": "2.0",
+  "description": "Trouve les opportunités d'arbitrage Amazon FBA sur les distributeurs français",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.amazon.fr/*",
+    "https://www.google.fr/*",
+    "https://www.google.com/*",
+    "https://www.carrefour.fr/*",
+    "https://www.leclerc.fr/*",
+    "https://www.e.leclerc/*",
+    "https://www.auchan.fr/*",
+    "https://www.intermarche.com/*",
+    "https://www.monoprix.fr/*",
+    "https://www.chronodrive.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ProfitHunter"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.fr/*"
+      ],
+      "js": [
+        "content_amazon.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
